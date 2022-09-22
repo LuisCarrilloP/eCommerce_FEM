@@ -44,6 +44,8 @@ cartIconBtn.addEventListener('click', () => {
   //priceModal.innerHTML = `$125 x${lastValue} <span>$${125*lastValue}.00</span>`
 
   if(lastValue == 0){
+    productContainer.innerHTML = '<p class="cart-empty">Your cart is empty</p>'
+  }else{
     drawProductInModal()
   }
   
@@ -60,7 +62,80 @@ function deleteProduct(){
   }) 
 }
 
-//Modificar
+//Cambiar imagenes cuando se presione los botones flecha
+const imageContainer = document.querySelector(".gallery__image-container")
+const prevGalleryBtn = document.querySelector(".gallery__previous")
+const nextGalleryBtn = document.querySelector(".gallery__next")
+let imgIndex = 1
+
+nextGalleryBtn.addEventListener('click', () => {
+  changeNextImage(imageContainer)
+})
+
+prevGalleryBtn.addEventListener('click', () => {
+  changePrevImage(imageContainer)
+})
+
+//Mostrar el modal de imagenes al hacer click en la imagen
+const imagesModal = document.querySelector(".modal-gallery__background")
+const closeModalBtn = document.querySelector(".modal-gallery__close")
+
+imageContainer.addEventListener('click', () => {
+  if(window.innerWidth >= 1115){ //solo en pantallas grandes
+    imagesModal.style.display = 'grid'
+  }
+})
+
+closeModalBtn.addEventListener('click', () => {
+  imagesModal.style.display = "none"
+})
+
+//Cambiar las imagenes principales desde los thumbnails
+let galleryThumbnails = document.querySelectorAll(".gallery__thumbnail")
+galleryThumbnails = [...galleryThumbnails]
+
+galleryThumbnails.forEach(thumbnail => {
+  thumbnail.addEventListener('click', (event) => {
+    imageContainer.style.backgroundImage = `url('../../assets/images/image-product-${event.target.id}.jpg')`
+  })
+})
+
+//Cambiar las imagenes principales desde los thumbnails en el MODAL
+let modalThumbnails = document.querySelectorAll(".modal-gallery__thumbnail")
+let modalImageContainer = document.querySelector(".modal-gallery__image-container")
+modalThumbnails = [...modalThumbnails]
+
+modalThumbnails.forEach(modalThumbnail => {
+  modalThumbnail.addEventListener('click', (event) => {
+    modalImageContainer.style.backgroundImage = `url('../../assets/images/image-product-${event.target.id.slice(-1)}.jpg')`
+  })
+})
+
+//cambiar imagen de modal con flechas
+const nextModalBtn = document.querySelector(".modal-gallery__next")
+const prevModalBtn = document.querySelector(".modal-gallery__previous")
+
+nextModalBtn.addEventListener('click', () => {
+  changeNextImage(modalImageContainer)
+})
+
+prevModalBtn.addEventListener('click', () => {
+  changeNextImage(modalImageContainer)
+})
+
+//mostrar el navbar cuadno presiono menu hamburguesa
+const hamburguerMenu = document.querySelector(".header__menu")
+const modalNavBar = document.querySelector(".modal-navbar__background")
+const closeModalNavbar = document.querySelector(".modal-navbar__close")
+
+hamburguerMenu.addEventListener('click', () => {
+  modalNavBar.style.display = "block"
+})
+
+closeModalNavbar.addEventListener('click', () => {
+  modalNavBar.style.display = "none"
+})
+
 
 
 
@@ -81,4 +156,22 @@ function drawProductInModal(){
   deleteProduct()
   let priceModal = document.querySelector(".cart-modal__price")
   priceModal.innerHTML = `$125 x${lastValue} <span>$${125*lastValue}.00</span>`
+}
+
+function changeNextImage(imgContainer){
+  if(imgIndex==4){
+    imgIndex=1
+  }else{
+    imgIndex++
+  }
+  imgContainer.style.backgroundImage = `url('../../assets/images/image-product-${imgIndex}.jpg')`
+}
+
+function changePrevImage(imgContainer){
+  if(imgIndex == 1){
+    imgIndex = 4
+  }else{
+    imgIndex--
+  }
+  imgContainer.style.backgroundImage = `url('../../assets/images/image-product-${imgIndex}.jpg')`
 }
